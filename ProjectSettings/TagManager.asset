@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Roof
   - Rain
+  - WaterParticle
   layers:
   - Default
   - TransparentFX
