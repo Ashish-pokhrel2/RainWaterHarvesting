@@ -13,14 +13,14 @@ public class TapControl : MonoBehaviour
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private ParticleSystem waterParticles;
-    
+
     [Header("Materials")]
-    [SerializeField] private Material highlightMaterial; // Add this line
-    
+    [SerializeField] private Material highlightMaterial;
+
     [Header("Audio")]
     [SerializeField] private AudioClip tapOnSound;
     [SerializeField] private AudioClip tapOffSound;
-    
+
     private AudioSource audioSource;
     private bool tapOn = false;
     private Material originalMaterial;
@@ -30,11 +30,12 @@ public class TapControl : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         tapRenderer = GetComponentInChildren<MeshRenderer>();
+
         if (tapRenderer != null)
         {
             originalMaterial = tapRenderer.material;
         }
-        
+
         if (waterParticles != null)
             waterParticles.Stop();
 
@@ -48,49 +49,46 @@ public class TapControl : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, playerTransform.position);
         bool inRange = distance <= activationDistance;
-        
+
         Vector3 directionToTap = (transform.position - playerCamera.transform.position).normalized;
         float angle = Vector3.Angle(playerCamera.transform.forward, directionToTap);
         bool isLooking = angle <= lookAngleThreshold;
 
+        // UI text display
         if (buttonText != null)
-            buttonText.gameObject.SetActive(inRange && isLooking);
-
-        // Only apply highlight if highlightMaterial is assigned
-        if (highlightMaterial != null)
         {
-            tapRenderer.material = (inRange) ? highlightMaterial : originalMaterial;
+            buttonText.gameObject.SetActive(inRange && isLooking);
+            buttonText.text = tapOn ? "Press E to Turn OFF" : "Press E to Turn ON";
+        }
+
+        // Highlight material
+        if (highlightMaterial != null && originalMaterial != null)
+        {
+            tapRenderer.material = (inRange && isLooking) ? highlightMaterial : originalMaterial;
+        }
+
+        // Input to toggle tap
+        if (inRange && isLooking && Input.GetKeyDown(KeyCode.E))
+        {
+            ToggleTap();
         }
     }
 
     public void ToggleTap()
     {
-        if (!IsPlayerFacingTap()) return;
-
         tapOn = !tapOn;
-        
-        if (buttonText != null)
-            buttonText.text = tapOn ? "Turn Tap OFF" : "Turn Tap ON";
-        
+
         if (waterParticles != null)
         {
             if (tapOn) waterParticles.Play();
             else waterParticles.Stop();
         }
-        
-        if (audioSource != null)
-            audioSource.PlayOneShot(tapOn ? tapOnSound : tapOffSound);
-    }
 
-    private bool IsPlayerFacingTap()
-    {
-        if (!playerTransform || !playerCamera) return false;
-        
-        float distance = Vector3.Distance(transform.position, playerTransform.position);
-        if (distance > activationDistance) return false;
-        
-        Vector3 directionToTap = (transform.position - playerCamera.transform.position).normalized;
-        float angle = Vector3.Angle(playerCamera.transform.forward, directionToTap);
-        return angle <= lookAngleThreshold;
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(tapOn ? tapOnSound : tapOffSound);
+        }
+
+        Debug.Log("Tap is now " + (tapOn ? "ON" : "OFF"));
     }
 }
