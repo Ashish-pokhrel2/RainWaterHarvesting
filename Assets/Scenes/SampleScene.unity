@@ -378,11 +378,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8304289338898765771, guid: e9b05e00f592a534587504de67786196, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 47.5
+      value: 48.48
       objectReference: {fileID: 0}
     - target: {fileID: 8304289338898765771, guid: e9b05e00f592a534587504de67786196, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 40.08
+      value: 39
       objectReference: {fileID: 0}
     - target: {fileID: 8304289338898765771, guid: e9b05e00f592a534587504de67786196, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1291,7 +1291,7 @@ PrefabInstance:
     - target: {fileID: 6019820667675772685, guid: 2be379c9af32ca9448a0b90613dc9c37, type: 3}
       propertyPath: playerTransform
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 504311377}
     - target: {fileID: 7166750598016593026, guid: 2be379c9af32ca9448a0b90613dc9c37, type: 3}
       propertyPath: m_LocalPosition.x
       value: 23.7585
